@@ -86,7 +86,8 @@ namespace ANU_SF
                 mySql += "        MUSEYN, ";
                 mySql += "        MNOTE ";
                 mySql += "   FROM SF_CODE1 ";
-
+                mySql += "WHERE MCODE1 = '"+txt_mCode1.Text+"';";
+                
                 aParam = new string[] { "", "", "" };
 
                 DataSet oraDS = SF_Global.getDataSet(aParam, mySql);
@@ -153,6 +154,7 @@ namespace ANU_SF
                 //    mySql += "   WHERE MCODE1 = '" + txt_mCode1.Text + "'; ";
                 //    SF_Global.saveData(mySql);
                 //}
+                SF_Global.saveData(mySql);
                 this.Cursor = Cursors.Default;
             }
             catch (Exception ex)
@@ -454,7 +456,8 @@ namespace ANU_SF
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            Data_Mst_Save();
+            //Data_Mst_Save();
+            Data_Mst_Check();
             MstbtnCancel();
 
         }
