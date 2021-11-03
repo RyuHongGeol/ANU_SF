@@ -95,7 +95,7 @@ namespace ANU_SF
                 //dataGridView1.DataSource = null;
                 if (oraDS != null && dataGridView1.Rows.Count > 0)
                 {
-                    if (MessageBox.Show("Exist Data", "수정하시겠습니까?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    if (MessageBox.Show("수정하시겠습니까?", "Exist Data", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         Data_Mst_Update();
                     }
