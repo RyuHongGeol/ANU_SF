@@ -211,6 +211,50 @@ namespace ANU_SF
             Data_Mst_Select();
         }
 
+
+        private void Data_Dtl_Check()
+        {
+            this.Cursor = Cursors.WaitCursor;
+
+            try
+            {
+                mySql = "";
+                mySql += " SELECT DCODE2, ";
+                mySql += "        DDESC2, ";
+                mySql += "        DUSEYN, ";
+                mySql += "        DNOTE ";
+                mySql += "   FROM SF_CODE2 ";
+                mySql += "  WHERE DCODE1 = '" + txt_mCode1.Text.Trim() + "'  ";
+
+                aParam = new string[] { "", "", "" };
+
+                DataSet oraDS = SF_Global.getDataSet(aParam, mySql);
+
+                //dataGridView1.DataSource = null;
+                if (oraDS != null && dataGridView1.Rows.Count > 0)
+                {
+                    if (MessageBox.Show("수정하시겠습니까?", "Exist Data", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        Data_Dtl_Update();
+                    }
+
+                }
+                else
+                {
+                    Data_Mst_Save();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Cursor = Cursors.Default;
+                MessageBox.Show(ex.ToString(), "확인 - 144");
+            }
+            finally
+            {
+                this.Cursor = Cursors.Default;
+            }
+        }
+
         private void Data_Dtl_Select()
         {
             this.Cursor = Cursors.WaitCursor;
@@ -287,24 +331,23 @@ namespace ANU_SF
             try
             {
                 mySql = "";
-                mySql += " BEGIN ";
                 mySql += " INSERT INTO SF_CODE2 ( ";
                 mySql += "         DCODE1, DCODE2, DDESC2 , DNOTE, DUSEYN";
                 mySql += "     ) ";
-                mySql += "         SELECT '" + txt_mCode1.Text + "', ";
-                mySql += "                '" + txt_dCode2.Text + "', ";
-                mySql += "                '" + txt_dDesc2.Text + "', ";
-                mySql += "                '" + txt_dNote.Text + "', ";
-                mySql += "                '" + chk_dUseYN.Checked.ToString() + "' ";
-                mySql += "             FROM DUAL ";
-                mySql += "             WHERE NOT EXISTS (SELECT * ";
-                mySql += "                         FROM SF_CODE2 ";
-                mySql += "                         WHERE DCODE1 = '" + txt_mCode1.Text + "' AND DCODE2 = '" + txt_dCode2.Text + "'); ";
+                mySql += "'" + txt_mCode1.Text + "', ";
+                mySql += "'" + txt_dCode2.Text + "', ";
+                mySql += "'" + txt_dDesc2.Text + "', ";
+                mySql += "'" + txt_dNote.Text + "', ";
+                mySql += "'" + chk_dUseYN.Checked.ToString() + "' ";
+                //mySql += "             FROM DUAL ";
+                //mySql += "             WHERE NOT EXISTS (SELECT * ";
+                //mySql += "                         FROM SF_CODE2 ";
+                //mySql += "                         WHERE DCODE1 = '" + txt_mCode1.Text + "' AND DCODE2 = '" + txt_dCode2.Text + "'); ";
 
-                mySql += "  UPDATE SF_CODE2 ";
-                mySql += "     SET DDESC2 = '" + txt_dDesc2.Text + "', DNOTE = '" + txt_dNote.Text + "', DUSEYN = '" + chk_dUseYN.Checked.ToString() + "' ";
-                mySql += "   WHERE DCODE1 = '" + txt_mCode1.Text + "' AND DCODE2 = '" + txt_dCode2.Text + "'; ";
-                mySql += " END; ";
+                //mySql += "  UPDATE SF_CODE2 ";
+                //mySql += "     SET DDESC2 = '" + txt_dDesc2.Text + "', DNOTE = '" + txt_dNote.Text + "', DUSEYN = '" + chk_dUseYN.Checked.ToString() + "' ";
+                //mySql += "   WHERE DCODE1 = '" + txt_mCode1.Text + "' AND DCODE2 = '" + txt_dCode2.Text + "'; ";
+                //mySql += " END; ";
 
 
                 if (SF_Global.saveData(mySql))
@@ -316,6 +359,16 @@ namespace ANU_SF
             }
 
             Data_Dtl_Select();
+        }
+
+        private void Data_Dtl_Update()
+        {
+            mySql += "  UPDATE SF_CODE2 ";
+            mySql += "     SET DDESC2 = '" + txt_dDesc2.Text + "', DNOTE = '" + txt_dNote.Text + "', DUSEYN = '" + chk_dUseYN.Checked.ToString() + "' ";
+            mySql += "   WHERE DCODE1 = '" + txt_mCode1.Text + "' AND DCODE2 = '" + txt_dCode2.Text + "'; ";
+            SF_Global.saveData(mySql);
+
+            this.Cursor = Cursors.Default;
         }
 
         #endregion
